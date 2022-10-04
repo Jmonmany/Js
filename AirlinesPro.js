@@ -11,102 +11,98 @@ let flights = [
     { id: 09, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
   ];
 
-//Saludos!
-
-const Name = prompt("Wellcome! We will be happy to help you, please give us your name to start with.")
-alert(Name +" below you will find all the information on available flights")
+const name = prompt("Wellcome! We will be happy to help you, please give us your name to start with.")
+alert(name +" below you will find all the information on available flights")
 
 let prices = []
-let StopoverFlights = []
+let stopoverFlights = []
 let lastFlights = flights.slice(5)
 
-//Declaramos funcion que mostrara INFO y acumulara valores
+//Declare a function that will display INFO and accumulate values
 
-const ShowInfo = () =>{
+const showInfo = () =>{
     for (let i = 0; i < flights.length; i++) {
     const element = flights[i];
     prices.push(element.cost);
     
-    if(element.scale === true){
-        StopoverFlights.push(element.scale)
+    if(element.scale){
+        stopoverFlights.push(element.scale)
         element.scale = "has" 
     }else{
         element.scale = "hasn't"
     }
     console.log(`The flight number ${element.id} with destination: ${element.to}, departing from: ${element.from} has a cost of ${element.cost}€ and ${element.scale} a stopover.`)
-    
     }
 }
-ShowInfo();
+showInfo();
 
-//Muestra de resultados Aerolinea Basic
+//Displays the average price of all flights
 
-let Suma = prices.reduce((total, actual) => {
-    return total + actual 
+let sum = prices.reduce((total, current) => {
+    return total + current 
 })    
-console.log("The Average price of all flights is "+Suma/prices.length +"€")
-console.log(`There are ${StopoverFlights.length} flights with stopover`)
+console.log("The Average price of all flights is "+sum/prices.length +"€")
+console.log(`There are ${stopoverFlights.length} flights with stopover`)
 console.log(`The last five flights of the day are: `)
 for (destiny of lastFlights) { 
     console.log(destiny.to)
 }
 
-//Parte PRO
-//Función accesible por parte del Usuario
-const UserAction = () => {
+//User accessible function
+const userAction = () => {
     console.log("Dear User, below you can filter the flights according to your budget.")
-    const budget = +prompt("let us know your budget and we will show you matching flights.")
+    const budget = +prompt("Let us know your budget and we will show you matching flights.")
     flights = flights.filter((flight) => flight.cost <= budget);
         console.log("The results of your search are shown below.")
-        ShowInfo();
-        let Answer = confirm("Would yo like set another budget?")
-        if(Answer === true){
-            UserAction()
+        showInfo();
+        let answer = confirm("Would yo like set another budget?")
+        if(answer){
+            userAction()
         }else{
             console.log("Thanks you, see you next time")
         }
 }
-//Función accesible por parte del Administrador
-const AdminAction = () => {
+//Function accessible by the Administrator
+const adminAction = () => {
     
-    const Addflight = () =>{
+    const addFlight = () =>{
         
-        const NewFlight = {}
+        const newFlight = {}
         console.log("Please; help us to add the new flight information")
-        NewFlight.id = flights.length
-        NewFlight.to = prompt("where it flies to?")
-        NewFlight.from = prompt("where does the flight leave from?")
-        NewFlight.cost = +prompt("How much will cost?")
-        NewFlight.scale = confirm("This flight will have a stopover?")
-        flights.push(NewFlight)
-        ShowInfo()
+        newFlight.id = flights.length
+        newFlight.to = prompt("Where it flies to?")
+        newFlight.from = prompt("Where does the flight leave from?")
+        newFlight.cost = +prompt("How much will cost?")
+        newFlight.scale = confirm("This flight will have a stopover?")
+        flights.push(newFlight)
+        showInfo()
         if(flights.length<=15){
-            let Answer = confirm("Would yo like to add more flights?")
+            let answer = confirm("Would yo like to add more flights?")
             if(flights.length === 15){
                 alert("I'm sorry; no more flights can be introduced")
                 console.log("Thanks you, see you next time")
             }
-            else if(Answer === true){
-                Addflight()
+            else if(answer){
+                addFlight()
             }else{
                 console.log("Thanks you, see you next time")
             }
         }
     }
 
-    const DeleteFlight = () =>{
-        ShowInfo();
-        const IdToDelete = +prompt("insert ID to delete");
-        flights = flights.filter((flight) => flight.id !== IdToDelete)
-        ShowInfo();
+    const deleteFlight = () =>{
+        showInfo();
+        const idToDelete = +prompt("Insert ID to delete");
+        flights = flights.filter((flight) => flight.id !== idToDelete)
+        
         if(flights.length>=0){
-            let Answer = confirm("Would yo like to delete more flights?")
+            let answer = confirm("Would yo like to delete more flights?")
             if(flights.length === 0){
                 alert("I'm sorry; no more flights can be deleted")
                 console.log("Thanks you, see you next time")
             }
-            else if(Answer === true){
-                DeleteFlight()
+            else if(answer){
+                deleteFlight()
             }else{
                 console.log("Thanks you, see you next time")
             }
@@ -115,23 +111,23 @@ const AdminAction = () => {
 
     const action = prompt("As a Admin, would you like to create or delete a flight?")
     if(action.toLocaleLowerCase() === "create"){
-        Addflight();
+        addFlight();
     }else if(action.toLocaleLowerCase() === "delete"){
-        DeleteFlight();
+        deleteFlight();
     }else{
         alert("Please enter a valid action: create/delete")
-        AdminAction()
+        adminAction()
     }
 }
 
-//Función pregunta Aerolinea Pro
+//Function that asks for the user's role
 
-const AdminOrUser = () => {
-    let Role = confirm("Do you want to continue as a Admin? if not please press Cancel");
-    if(Role === true){
-        AdminAction();
+const adminOrUser = () => {
+    let role = confirm("Do you want to continue as a Admin? if not please press Cancel");
+    if(role){
+        adminAction();
     }else{
-        UserAction()
+        userAction()
     }
 }
-AdminOrUser();
+adminOrUser();
