@@ -28,9 +28,9 @@ const questions = [
 	{letter: "z", answer: "zen", status: 0, question: ("CON LA Z. Escuela de budismo que busca la experiencia de la sabiduría más allá del discurso racional")},
 ]
 
-let CurrentPlayer = []
-const Ranking = []
-const AskName = () => {
+let currentPlayer = []
+const ranking = []
+const askName = () => {
     const playerName = prompt("What is your name?")
     if(!playerName){
         alert("Please enter your Name")
@@ -39,12 +39,11 @@ const AskName = () => {
     return playerName
 }
 
-const ShowRanking = () => {
-    console.table(Ranking)
+const showRanking = () => {
+    console.table(ranking)
 }
-
 class UserConstructor {
-    id = Ranking.length + 1
+    id = ranking.length + 1
     Name;
     score;
     constructor(id, Name, score) {
@@ -52,7 +51,7 @@ class UserConstructor {
             successes: 0,
             failures: 0
         }
-        this.Name = AskName()
+        this.Name = askName()
         this.description = function () {
             console.log("Player number " + this.id + ": " + this.Name + ", Correct answers: " + this.score.successes + " Incorrect answers: " + this.score.failures)
         }
@@ -60,8 +59,8 @@ class UserConstructor {
     }
 }
 const newUser = () => {
-    const User = new UserConstructor()
-    CurrentPlayer.push(User)
+    const user = new UserConstructor()
+    currentPlayer.push(user)
 }
 
 const getWord = (PlayerName) => {
@@ -95,7 +94,7 @@ const checkAnswer = (playerAnswer = "", question, player = {}) => {
     player[0].score.successes ++
     return 
 }
-const Round = (player, questions) => {
+const round = (player, questions) => {
     
     outer: for (let i = 0; i < questions.length; i++) {
         if(questions[i].status !== 0){
@@ -113,24 +112,24 @@ const Round = (player, questions) => {
         }
     }
 }
-const Reset = (player = {}, questions = []) => {
+const reset = (player = {}, questions = []) => {
     questions.map(element => element.status = 0)
     player.pop()
 }
 const newTurn = () => confirm("Continue?")
 const newRound = () => confirm("Continue with the next Round?")
 
-const Game = (questions) => {
+const game = (questions) => {
     newUser()
     
-    const player = CurrentPlayer
+    const player = currentPlayer
     const Confirm = confirm(player[0].Name + " do you want to start?")
     
     if(!Confirm){
         return
     }
     do {
-        Round(player, questions)
+        round(player, questions)
         if(questions.every((element) => element.status !== 0)){
             alert("You have finished the game!")
             break
@@ -138,8 +137,8 @@ const Game = (questions) => {
     } while (newRound());
     
     player[0].description()
-    Ranking.push(player)
-    Reset(player, questions)
-    ShowRanking()
+    ranking.push(player)
+    reset(player, questions)
+    showRanking()
 }
-Game(questions)
+game(questions)
