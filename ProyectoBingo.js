@@ -1,9 +1,10 @@
-let Name
-let Stop = false
+let name
+let stop = false
+
 const checkValidName = () =>{
-  Name = prompt("Hello!, What is your name?")
-  if(Name == undefined || Name === ""){
-    alert("Please enter your Name")
+  name = prompt("Hello! What is your name?")
+  if(!name){
+    alert("Please enter your name")
     checkValidName()
   }
 }
@@ -11,72 +12,69 @@ checkValidName()
 
 let counter = 0
 let success = false
-let LINE = 0
+let line = 0
 let answer
-//Array vacío y preguntamos 
-let Cardboard;
+let cardboard;
 
-//Función generadora de números random
+//Random number generator function
 const randomNumber = function(minimum, maximum){
   return Math.floor(Math.random()*(maximum-minimum)+1);
 }
 
-//Función que rellena las 3 líneas del cartón con 15 números al azar sin repetir
-const FillCardboard = () => {
-  const ArrayNumbers = []
-  while (ArrayNumbers.length < 15) {
+//Function that fills the 3 lines of the cardboard with 15 random numbers without repeating.
+const fillCardboard = () => {
+  const arrayNumbers = []
+  while (arrayNumbers.length < 15) {
     const numRandom = randomNumber(0, 25);
-    if (!ArrayNumbers.includes(numRandom)) {
-      ArrayNumbers.push(numRandom);
+    if (!arrayNumbers.includes(numRandom)) {
+      arrayNumbers.push(numRandom);
     }
   }
   let lines = []
-  for (let i = 0; i < ArrayNumbers.length; i+=5) {
-    const element = ArrayNumbers.slice(i,i+5);
+  for (let i = 0; i < arrayNumbers.length; i+=5) {
+    const element = arrayNumbers.slice(i,i+5);
     lines.push(element);
   }
-  Cardboard = lines
+  cardboard = lines
 }
 
-//Función auxiliar que muestra el estado del cartón
-const ShowCardboard = () => {
-  console.log(`Su cartón es:\n ${Cardboard[0].join(" ")}\n ${Cardboard[1].join(" ")}\n ${Cardboard[2].join(" ")}`)
+//Auxiliary function showing the carton status
+const showCardboard = () => {
+  console.log(`Su cartón es:\n ${cardboard[0].join(" ")}\n ${cardboard[1].join(" ")}\n ${cardboard[2].join(" ")}`)
 }
 
-
-
-//Función que de ¿Acierto? revisa el valor de la variable success
-const Check = () => {
-  if(success == true){
+//Function that checks the value of the variable success
+const checkSuccess = () => {
+  if(success){
     console.log("_________________________________________________")
     alert("Success!")
-    ShowCardboard()
-  }else{
+    showCardboard()
+    return
+  }
     console.log("_________________________________________________")
     alert("No success, sorry!")
-    ShowCardboard()
-  }
+    showCardboard()
+    return
 }
-//Función que guarda true or false, para continuar con el juego
-let YesOrNot = () =>{
-  let answer = confirm( Name +" Would you like to continue?")
-  if(answer == true){
-    return answer
-  }else if(answer == false){
+//Function that saves true or false, to continue with the game.
+let yesOrNot = () =>{
+  let answer = confirm( name +" Would you like to continue?")
+  if(answer){
     return answer
   }
+  return answer
 };
 
-//Creamos Array de Números ya sorteados
+//Create Array of already drawn Numbers
 let drawnNumbers = []
 
-//Función ejecutora de Turnos: muestra número al azar, comprueba y cambia resultados
-const Turn = () =>{
+//Shift runner function: displays random number, checks and changes results
+const turn = () =>{
   const randomNum = randomNumber(0, 25)
   
   while(!drawnNumbers.includes(randomNum)){
-    if(!YesOrNot()){
-      Stop = true
+    if(!yesOrNot()){
+      stop = true
       alert("Thanks you, Bye")
       break
     }
@@ -86,66 +84,65 @@ const Turn = () =>{
       let numFinded;
       
       switch (true) {
-        case Cardboard[0].includes(randomNum):
-          numFinded = Cardboard[0].indexOf(randomNum)
-          Cardboard[0][numFinded] = "x"
+        case cardboard[0].includes(randomNum):
+          numFinded = cardboard[0].indexOf(randomNum)
+          cardboard[0][numFinded] = "x"
           success = true
-          if(!Cardboard[0].find(Number)){
+          if(!cardboard[0].find(Number)){
             alert("LINE number 1")
-            LINE += 1
+            line += 1
           }
           break;
-          case Cardboard[1].includes(randomNum):
-            numFinded = Cardboard[1].indexOf(randomNum)
-            Cardboard[1][numFinded] = "x"
+          case cardboard[1].includes(randomNum):
+            numFinded = cardboard[1].indexOf(randomNum)
+            cardboard[1][numFinded] = "x"
             success = true
-            if(!Cardboard[1].find(Number)){
+            if(!cardboard[1].find(Number)){
               alert("LINE number 2")
-              LINE += 1
+              line += 1
             }
             break;
-            case Cardboard[2].includes(randomNum):
-              numFinded = Cardboard[2].indexOf(randomNum)
-              Cardboard[2][numFinded] = "x"
+            case cardboard[2].includes(randomNum):
+              numFinded = cardboard[2].indexOf(randomNum)
+              cardboard[2][numFinded] = "x"
               success = true
-              if(!Cardboard[2].find(Number)){
+              if(!cardboard[2].find(Number)){
                 alert("LINE number 3")
-                LINE += 1
+                line += 1
               }
               break;  
               default:
                 break;
               }
-              Check()
+              checkSuccess()
               success = false
               counter += 1
           }
 }  
         
-//Función inicio de Juego    
-const SartBingo = () => {
+//Game start function    
+const sartBingo = () => {
       
-  FillCardboard()
-  ShowCardboard()
+  fillCardboard()
+  showCardboard()
       
-          while (LINE < 4) {
-            if(LINE === 3){alert("BINGO")
-              console.log("Completed the game in " +counter+ " turns")
-              let answer = confirm( Name +" Do you want to play again?")
-              if(answer === true){
-                LINE = 0
-                counter = 0
-                drawnNumbers = []
-                SartBingo()
-              }else{
-                break
-              }
-            }
-            if(Stop === true){
-              break
-            }
-            Turn()
-          }
-
+  while (line < 4) {
+    if(line === 3){alert("BINGO")
+      console.log("Completed the game in " +counter+ " turns")
+      let answer = confirm( name +" Do you want to play again?")
+      if(answer){
+      line = 0
+      counter = 0
+      drawnNumbers = []
+      sartBingo()
+      }else{
+        break
+      }
+    }
+    if(stop){
+      break
+    }
+  turn()
+  }
 }
-SartBingo()
+sartBingo()
