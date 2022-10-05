@@ -93,7 +93,14 @@ const adminAction = () => {
     const deleteFlight = () =>{
         showInfo();
         const idToDelete = +prompt("Insert ID to delete");
-        flights = flights.filter((flight) => flight.id !== idToDelete)
+        let idSearched = flights.map(flight => flight.id).find(id => id == idToDelete)
+        
+        if(idSearched === undefined){
+            alert("The identifier you entered does not exist")
+            deleteFlight()
+        }
+        
+        flights = flights.filter(flight => flight.id !== idToDelete)
         
         if(flights.length>=0){
             let answer = confirm("Would yo like to delete more flights?")
