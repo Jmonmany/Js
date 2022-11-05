@@ -91,7 +91,6 @@ const person1 = {
     apellido: "monmany",
     edad: 30,
 };
-// Object.entries(person1) output [["nombre","Javier"],["apellido","monmany"],["edad", 30]]
 Object.entries(person1).forEach(element => {
     const clave = element[0];
     const valor = element[1];
@@ -100,3 +99,4 @@ Object.entries(person1).forEach(element => {
     }
 });
 console.log(person1)
+// Object.entries(person1) output [["nombre","Javier"],["apellido","monmany"],["edad", 30]]
